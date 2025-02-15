@@ -427,6 +427,7 @@ static inline VkFFTResult initializeBluesteinAutoPadding(VkFFTApplication* app) 
 }
 static inline VkFFTResult setConfigurationVkFFT(VkFFTApplication* app, VkFFTConfiguration inputLaunchConfiguration)  {
 	VkFFTResult resFFT = VKFFT_SUCCESS;
+    app->configuration.dirkKernelCounter = 0; //DvdB
     //app->configuration = {};// inputLaunchConfiguration;
 	if (inputLaunchConfiguration.doublePrecision != 0)	app->configuration.doublePrecision = inputLaunchConfiguration.doublePrecision;
 	if (inputLaunchConfiguration.doublePrecisionFloatMemory != 0)	app->configuration.doublePrecisionFloatMemory = inputLaunchConfiguration.doublePrecisionFloatMemory;

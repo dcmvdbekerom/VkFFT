@@ -321,6 +321,8 @@ typedef struct {
 	MTL::CommandBuffer* commandBuffer;//Filled at app execution
 	MTL::ComputeCommandEncoder* commandEncoder;//Filled at app execution
 #endif
+    pfUINT dirkKernelCounter;
+    const char* dirkName;
 } VkFFTConfiguration;//parameters specified at plan creation
 
 typedef struct {
