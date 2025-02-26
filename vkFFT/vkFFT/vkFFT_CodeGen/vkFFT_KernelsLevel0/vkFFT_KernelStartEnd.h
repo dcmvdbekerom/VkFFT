@@ -46,6 +46,12 @@ static inline void appendKernelStart(VkFFTSpecializationConstantsLayout* sc, int
 	appendSharedMemoryVkFFT(sc, (int)locType);
 	sc->tempLen = sprintf(sc->tempStr, "void main() {\n");
 	PfAppendLine(sc);
+	
+	//DvdB
+	if (sc->dynamicBatch){
+		sc->tempLen = sprintf(sc->tempStr, "if (gl_WorkGroupID.y >= currentBatch.N) return;\n");
+		PfAppendLine(sc);
+	}
 #elif(VKFFT_BACKEND==1)
 	sc->tempLen = sprintf(sc->tempStr, "extern __shared__ float shared[];\n");
 	PfAppendLine(sc);
@@ -274,6 +280,11 @@ static inline void appendKernelStart_R2C(VkFFTSpecializationConstantsLayout* sc,
 	sc->tempLen = sprintf(sc->tempStr, "void main() {\n");
 	PfAppendLine(sc);
 	
+	//DvdB
+	if (sc->dynamicBatch){
+		sc->tempLen = sprintf(sc->tempStr, "if (gl_WorkGroupID.z >= currentBatch.N) return;\n");
+		PfAppendLine(sc);
+	}
 #elif(VKFFT_BACKEND==1)
 	
 	sc->tempLen = sprintf(sc->tempStr, "extern \"C\" __global__ void __launch_bounds__(%" PRIi64 ") VkFFT_main_R2C ", sc->localSize[0].data.i * sc->localSize[1].data.i * sc->localSize[2].data.i);

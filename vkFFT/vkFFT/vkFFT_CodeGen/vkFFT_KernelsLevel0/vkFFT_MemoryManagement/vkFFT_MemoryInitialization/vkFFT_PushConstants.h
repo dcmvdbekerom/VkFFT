@@ -90,6 +90,11 @@ static inline void appendPushConstants(VkFFTSpecializationConstantsLayout* sc) {
 		sprintf(tempCopyStr, "consts.%s", sc->kernelOffset.name);
 		sprintf(sc->kernelOffset.name, "%s", tempCopyStr);
 	}
+	// if (sc->performPostCompilationCurrentBatch) {
+		// appendPushConstant(sc, &sc->currentBatch);
+		// sprintf(tempCopyStr, "consts.%s", sc->currentBatch.name);
+		// sprintf(sc->currentBatch.name, "%s", tempCopyStr);
+	// }
 #if(VKFFT_BACKEND==0)
 	sc->tempLen = sprintf(sc->tempStr, "} consts;\n\n");
 	PfAppendLine(sc);

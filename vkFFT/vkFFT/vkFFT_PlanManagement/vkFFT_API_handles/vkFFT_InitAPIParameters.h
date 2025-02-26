@@ -389,6 +389,11 @@ static inline VkFFTResult initParametersAPI(VkFFTApplication* app, VkFFTSpeciali
 		PfAllocateContainerFlexible(sc, &sc->kernelOffset, 50);
 		sprintf(sc->kernelOffset.name, "kernelOffset");
 	}
+	// if (sc->performPostCompilationCurrentBatch) {
+		// sc->currentBatch.type = 100 + sc->uintTypeCode;
+		// PfAllocateContainerFlexible(sc, &sc->currentBatch, 50);
+		// sprintf(sc->currentBatch.name, "currentBatch");
+	// }
 #if(VKFFT_BACKEND==0)
 	sprintf(sc->inputsStruct.name, "inputs");
 	sprintf(sc->outputsStruct.name, "outputs");
@@ -630,6 +635,9 @@ static inline VkFFTResult freeParametersAPI(VkFFTApplication* app, VkFFTSpeciali
 	if (sc->performPostCompilationKernelOffset) {
 		PfDeallocateContainer(sc, &sc->kernelOffset);
 	}
+	// if (sc->performPostCompilationCurrentBatch) {
+		// PfDeallocateContainer(sc, &sc->currentBatch);
+	// }
 	return res;
 }
 

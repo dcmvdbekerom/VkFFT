@@ -64,6 +64,10 @@ static inline VkFFTResult shaderGen_R2C_even_decomposition(VkFFTSpecializationCo
 	id++;
 	appendOutputLayoutVkFFT(sc, id);
 	id++;
+	if (sc->dynamicBatch){
+		appendCurrentBatchVkFFT(sc, id);
+		id++;	
+	}
 	if (sc->LUT) {
 		appendLUTLayoutVkFFT(sc, id);
 		id++;

@@ -22,6 +22,10 @@
 #ifndef VKFFT_COMPILEKERNEL_H
 #define VKFFT_COMPILEKERNEL_H
 #include "vkFFT/vkFFT_Structs/vkFFT_Structs.h"
+#include <iostream> //DvdB
+#include <fstream> //DvdB
+#include <string>  //DvdB
+using namespace std;
 
 #include <iostream> //DvdB
 #include <string>  //DvdV
@@ -165,36 +169,85 @@ static inline VkFFTResult VkFFT_CompileKernel(VkFFTApplication* app, VkFFTAxis* 
 
 		glslang_target_client_version_t client_version = (app->configuration.halfPrecision) ? GLSLANG_TARGET_VULKAN_1_1 : GLSLANG_TARGET_VULKAN_1_0;
 		glslang_target_language_version_t target_language_version = (app->configuration.halfPrecision) ? GLSLANG_TARGET_SPV_1_3 : GLSLANG_TARGET_SPV_1_0;
-		glslang_input_t input =
-		{
-			GLSLANG_SOURCE_GLSL,
-			GLSLANG_STAGE_COMPUTE,
-			GLSLANG_CLIENT_VULKAN,
-			client_version,
-			GLSLANG_TARGET_SPV,
-			target_language_version,
-			code0,
-			450,
-			GLSLANG_NO_PROFILE,
-			1,
-			0,
-			GLSLANG_MSG_DEFAULT_BIT,
-			(const glslang_resource_t*)&default_resource,
-		};
-        
-        // DvdB
-        app->configuration.dirkKernelCounter++;
-        const char* dname = app->configuration.dirkName;
-        
+		//glslang_input_t input =
+		// {
+			// GLSLANG_SOURCE_GLSL,
+			// GLSLANG_STAGE_COMPUTE,
+			// GLSLANG_CLIENT_VULKAN,
+			// client_version,
+			// GLSLANG_TARGET_SPV,
+			// target_language_version,
+			// code0,
+			// 450,
+			// GLSLANG_NO_PROFILE,
+			// 1,
+			// 0,
+			// GLSLANG_MSG_DEFAULT_BIT,
+			// (const glslang_resource_t*)&default_resource,
+		// };
+		
+		
+		//DvdB
+		
+		const char* dname = app->configuration.dirkName;
+        //const char* teststr = "HELLOOOOOOO";
         ofstream myfile;
-        std::string fname = "kernel_" ;
-        fname += dname ;
-        fname += "_"+ std::to_string(app->configuration.dirkKernelCounter) +".txt";
-        myfile.open(fname);
-        myfile << code0;
-        myfile.close();
-            
+        std::string fname = "";
+		
+		fname += dname ;
+		fname += "_kernel_";
+		//fname += ".txt";
+        fname += std::to_string(app->configuration.dirkKernelCounter) +".txt";
         
+		
+		
+		
+		// if (fname=="FFT1_kernel_3.txt"){
+			// ifstream file("FFT1_kernel_3b.txt", ios::in | ios::binary | ios::ate);
+        
+		    // unsigned int fileSize = file.tellg();
+			// file.seekg(0, ios::beg);
+
+			// char* buffer = new char[fileSize + 1];
+			// file.read(buffer, fileSize);
+			// buffer[fileSize] = '\0';
+
+			// file.close();
+						
+			// code0 = buffer;
+		
+		// }
+		
+		myfile.open(fname);
+		//app->configuration.dirkName = "DIRKDIRK";
+        //myfile << app->configuration.dirkName;
+		myfile << "// kernel type: " << app->configuration.dirkTypeFFT <<endl;
+        myfile << code0;
+		myfile << "\n/////////////////////////////\n";
+		
+		myfile.close();
+		app->configuration.dirkKernelCounter++;
+		
+		
+		
+		glslang_input_t input =
+
+			{	
+				GLSLANG_SOURCE_GLSL,
+				GLSLANG_STAGE_COMPUTE,
+				GLSLANG_CLIENT_VULKAN,
+				client_version,
+				GLSLANG_TARGET_SPV,
+				target_language_version,
+				code0,
+				450,
+				GLSLANG_NO_PROFILE,
+				1,
+				0,
+				GLSLANG_MSG_DEFAULT_BIT,
+				(const glslang_resource_t*)&default_resource,
+			};
+		
 		//printf("%s\n", code0);
 		glslang_shader_t* shader = glslang_shader_create((const glslang_input_t*)&input);
 		const char* err;
